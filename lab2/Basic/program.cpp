@@ -65,7 +65,7 @@ void Program::display() {
 void Program::run(EvalState &state) {
 	state.setValue("GOTO_DONE", 1);
 	state.setValue("PROGRAM_END_TAG",0);
-	for (auto it = S.begin(); it != S.end();) {
+	for (auto it = S.begin(); it != S.end() ||  state.getValue("GOTO_DONE") == 0 ;) {
 	//	cout << "Run Clause:" << it->lineNumber << endl;
 		if (state.getValue("PROGRAM_END_TAG") == 1) return;
 		if (state.getValue("GOTO_DONE") == 0) {
