@@ -88,7 +88,7 @@ void INPUT_Sta::execute(EvalState &state) {
 	bool ok = false;
 	int value;
 	while (1) {
-		cout << '?';
+		cout << " ? ";
 		cin >> str;
 		ok = true;
 		try {
