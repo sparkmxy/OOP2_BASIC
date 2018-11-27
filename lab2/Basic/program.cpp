@@ -62,12 +62,13 @@ void Program::display() {
 		cout << it->line << endl;
 }
 
-void Program::run(EvalState state) {
-	state.setValue("GOTO_DONE", 0);
+void Program::run(EvalState &state) {
+	state.setValue("GOTO_DONE", 1);
+	state.setValue("PROGRAM_END_TAG",0);
 	for (auto it = S.begin(); it != S.end();) {
 	//	cout << "Run Clause:" << it->lineNumber << endl;
-		if (state.isDefined("PROGRAM_END_TAG")) return;
-		if (state.isDefined("GOTO_TAG") && state.getValue("GOTO_DONE") == 0) {
+		if (state.getValue("PROGRAM_END_TAG") == 1) return;
+		if (state.getValue("GOTO_DONE") == 0) {
 			state.setValue("GOTO_DONE", 1);
 			int val = state.getValue("GOTO_TAG");
 			auto itt = S.find(clause(val));
