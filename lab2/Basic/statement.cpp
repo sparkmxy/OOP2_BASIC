@@ -90,14 +90,15 @@ void INPUT_Sta::execute(EvalState &state) {
 	while (1) {
 		cout << " ? ";
 		cin >> str;
-		ok = true;
-		try {
-			value = stringToInteger(str);
+		TokenScanner temp;
+		temp.ignoreWhitespace();
+		temp.scanNumbers();
+		temp.setInput(str);
+		string token = temp.nextToken();
+		if(temp.getTokenType(token) == NUMBER){
+			value = stringToInteger(token);
+			break;
 		}
-		catch (...) {
-			ok = false;
-		}
-		if (ok) break;
 		cout << "INVALID NUMBER\n";
 	}
 	state.setValue(varName, value);
