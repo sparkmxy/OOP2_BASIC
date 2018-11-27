@@ -135,7 +135,7 @@ public:
    int getNextLineNumber(int lineNumber);
 
    void display();
-   void run(EvalState state);
+   void run(EvalState &state);
 private:
 	set<clause> S;
 // Fill this in with whatever types and instance variables you need
