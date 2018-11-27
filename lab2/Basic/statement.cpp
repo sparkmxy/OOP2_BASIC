@@ -89,16 +89,15 @@ void INPUT_Sta::execute(EvalState &state) {
 	int value;
 	while (1) {
 		cout << " ? ";
-		cin >> str;
-		TokenScanner temp;
-		temp.ignoreWhitespace();
-		temp.scanNumbers();
-		temp.setInput(str);
-		string token = temp.nextToken();
-		if(temp.getTokenType(token) == NUMBER){
-			value = stringToInteger(token);
-			break;
+		getline(cin,str);
+		ok = true;
+		try {
+			value = stringToInteger(str);
 		}
+		catch (...) {
+			ok = false;
+		}
+		if (ok) break;
 		cout << "INVALID NUMBER\n";
 	}
 	state.setValue(varName, value);
@@ -238,6 +237,3 @@ Statement *getStatement(TokenScanner &scanner) {
 	if (id!=0 && scanner.hasMoreTokens()) error("SYNTAX ERROR");
 	return stmt;
 }
-
-
-
