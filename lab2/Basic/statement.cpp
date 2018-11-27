@@ -28,8 +28,13 @@ Statement::~Statement() {
  * Implementation notes: the Let_Sta subclass
  * ----------------------------------------------
  * The LET_Sta subclass declares Statement for assigning a variable.
+ * Note that some names can not be used
  */
-
+static const int illegalCnt = 13;
+static const string illegalNames[illegalCnt] = {
+	"LET","REM","GOTO","IF","THEN","INPUT","PRINT","END","LIST","RUN","QUIT","HELP","CLEAR"
+}; 
+	
 LET_Sta::LET_Sta(string varName,Expression *exp) : varName(varName), exp(exp) {}
 
 void LET_Sta::execute(EvalState & state) {
@@ -39,7 +44,10 @@ void LET_Sta::execute(EvalState & state) {
 void LET_Sta::parseSta(TokenScanner &scanner) {
 	varName = scanner.nextToken();
 	TokenType type = scanner.getTokenType(varName);
-	if (type != WORD || scanner.nextToken() != "=") error("SYNTAX ERROR");
+	int id = 0;
+	while(id < illegalCnt && illegalNames[id] != varName) id++;
+	if (type != WORD || scanner.nextToken() != "=" || id != illegalCnt) 
+		error("SYNTAX ERROR");
 	exp = parseExp(scanner);
 }
 
@@ -80,8 +88,8 @@ void INPUT_Sta::execute(EvalState &state) {
 	bool ok = false;
 	int value;
 	while (1) {
-		cout << '?';
-		cin >> str;
+		cout << " ? ";
+		getline(cin,str);
 		ok = true;
 		try {
 			value = stringToInteger(str);
@@ -229,7 +237,3 @@ Statement *getStatement(TokenScanner &scanner) {
 	if (id!=0 && scanner.hasMoreTokens()) error("SYNTAX ERROR");
 	return stmt;
 }
-
-
-
-
